@@ -1,8 +1,9 @@
+
 <p>Hover the mouse pointer over this to open checkout page.</p>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
-var options = {
+var options1 = {
     "key": "rzp_test_oJPbj9rC1rDGAQ", // Enter the Key ID generated from the Dashboard
     "amount": "50000", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
     "currency": "INR",
@@ -27,8 +28,18 @@ var options = {
         "color": "#3399cc"
     }
 };
-var rzp1 = new Razorpay(options);
-rzp1.on('payment.failed', function (response){
+
+
+
+$(document).ready(function() {
+
+    let url = window.location.href;
+    let path = url.substr(url.indexOf('?'))
+    options=getUrlVars(path);
+
+    console.log(options);
+   var rzp1 = new Razorpay(options);
+   rzp1.on('payment.failed', function (response){
         alert(response.error.code);
         alert(response.error.description);
         alert(response.error.source);
@@ -38,18 +49,21 @@ rzp1.on('payment.failed', function (response){
         alert(response.error.metadata.payment_id);
 });
 
-function notAButtonTriggerFunction(){
-    rzp1.open();
-    e.preventDefault();
-}
-
-
-$(document).ready(function(){
-  $("p").hover(function(){
-   // $(this).css("background-color", "yellow");
-    }, function(){
-   notAButtonTriggerFunction();
-  });
+rzp1.open();
 });
+
+
+function getUrlVars(url) {
+    var hash;
+    var myJson = {};
+    var hashes = url.slice(url.indexOf('?') + 1).split('&');
+    for (var i = 0; i < hashes.length; i++) {
+        hash = hashes[i].split('=');
+        myJson[hash[0]] = hash[1];
+        // If you want to get in native datatypes
+        // myJson[hash[0]] = JSON.parse(hash[1]); 
+    }
+    return myJson;
+}
 
 </script>
