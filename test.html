@@ -1,4 +1,5 @@
 
+<p>Hover the mouse pointer over this to open checkout page.</p>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
@@ -34,9 +35,14 @@ $(document).ready(function() {
 
     let url = window.location.href;
     let path = url.substr(url.indexOf('?'))
-    options=getUrlVars(path);
+    op=getUrlVars(path);
 
-    console.log(options);
+    let json =decodeURIComponent(op.data)
+    
+   // notAButtonTriggerFunction();
+
+   let options = JSON.parse(json)
+   console.log(json);
    var rzp1 = new Razorpay(options);
    rzp1.on('payment.failed', function (response){
         alert(response.error.code);
@@ -50,6 +56,7 @@ $(document).ready(function() {
 
 rzp1.open();
 });
+
 
 
 function getUrlVars(url) {
